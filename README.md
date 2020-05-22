@@ -1,1 +1,1 @@
-# python_BuildSolveMazeGUI
+# MazeGenerator
