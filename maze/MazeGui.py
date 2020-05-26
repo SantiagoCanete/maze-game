@@ -14,6 +14,8 @@ class MazeGui(maze.CanvasBuilder):
         self.window.title("Maze Creator")
         tk.Label(self.window, text="Number of columns:").grid(row=0, column=0)
         tk.Label(self.window, text="Number of rows:   ").grid(row=1, column=0)
+        tk.Label(self.window, text="Avatar X position:").grid(row=3, column=0)
+        tk.Label(self.window, text="Avatar Y position:").grid(row=4, column=0)
 
         entry_row = tk.Entry(self.window)
         entry_row.grid(row=0, column=1)
@@ -23,18 +25,31 @@ class MazeGui(maze.CanvasBuilder):
         entry_column.grid(row=1, column=1)
         entry_column.insert(0, "20")
 
+        entry_avatar_position_x = tk.Entry(self.window)
+        entry_avatar_position_x.grid(row=3, column=1)
+        entry_avatar_position_x.insert(0, "0")
+
+        entry_avatar_position_y = tk.Entry(self.window)
+        entry_avatar_position_y.grid(row=4, column=1)
+        entry_avatar_position_y.insert(0, "0")
+
         button_generate_maze = tk.Button(self.window, text="New Maze",
-                                         command=lambda: self.draw_maze(int(entry_row.get()), int(entry_column.get())))
+                                         command=lambda: self.draw_maze(int(entry_row.get()),
+                                                                        int(entry_column.get())))
         button_generate_maze.grid(row=2, column=0, sticky=tk.W)
 
         button_quit = tk.Button(self.window, text="Quit", command=self.window.quit)
-        button_quit.grid(row=2, column=1, sticky=tk.W)
+        button_quit.grid(row=6, column=0, sticky=tk.W)
 
         button_draw_avatar = tk.Button(self.window, text="Draw Avatar",
-                                       command=lambda: self.draw_avatar(0, 0, self.cell_size))
-        button_draw_avatar.grid(row=3, column=0)
+                                       command=lambda: self.draw_avatar(int(entry_avatar_position_x.get()),
+                                                                        int(entry_avatar_position_y.get()),
+                                                                        self.cell_size))
+        button_draw_avatar.grid(row=5, column=0, sticky=tk.W)
 
         self.canvas.grid(row=0, column=2, rowspan=20, columnspan=20)
+
+        self.window.bind("<KeyPress-Up>", lambda e: self.move_forward(e, self.cell_size))
 
         self.window.mainloop()
 
