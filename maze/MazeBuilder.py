@@ -146,59 +146,6 @@ class MazeBuilder:
 
         return is_visited
 
-    def write_svg(self, filename):
-        """Save the maze to an SVG file given a filename."""
-
-        nx = self.__num_columns
-        ny = self.__num_rows
-
-        aspect_ratio = nx / ny
-        # Pad the maze all around by this amount.
-        padding = 10
-        # Height and width of the maze image (excluding padding), in pixels
-        height = 500
-        width = int(height * aspect_ratio)
-        # Scaling factors mapping maze coordinates to image coordinates
-        scy, scx = height / ny, width / nx
-
-        def write_wall(f, x1, y1, x2, y2):
-            """Write a single wall to the SVG image file handle f."""
-
-            print('<line x1="{}" y1="{}" x2="{}" y2="{}"/>'
-                  .format(x1, y1, x2, y2), file=f)
-
-        # Write the SVG image file for maze
-        with open(filename, 'w') as f:
-            # SVG preamble and styles.
-            print('<?xml version="1.0" encoding="utf-8"?>', file=f)
-            print('<svg xmlns="http://www.w3.org/2000/svg"', file=f)
-            print('    xmlns:xlink="http://www.w3.org/1999/xlink"', file=f)
-            print('    width="{:d}" height="{:d}" viewBox="{} {} {} {}">'
-                  .format(width + 2 * padding, height + 2 * padding,
-                          -padding, -padding, width + 2 * padding, height + 2 * padding),
-                  file=f)
-            print('<defs>\n<style type="text/css"><![CDATA[', file=f)
-            print('line {', file=f)
-            print('    stroke: #000000;\n    stroke-linecap: square;', file=f)
-            print('    stroke-width: 5;\n}', file=f)
-            print(']]></style>\n</defs>', file=f)
-            # Draw the "South" and "East" walls of each cell, if present (these
-            # are the "North" and "West" walls of a neighbouring cell in
-            # general, of course).
-            for x in range(nx):
-                for y in range(ny):
-                    if self.maze[x][y].walls['Up']:
-                        x1, y1, x2, y2 = x * scx, (y + 1) * scy, (x + 1) * scx, (y + 1) * scy
-                        write_wall(f, x1, y1, x2, y2)
-                    if self.maze[x][y].walls['Right']:
-                        x1, y1, x2, y2 = (x + 1) * scx, y * scy, (x + 1) * scx, (y + 1) * scy
-                        write_wall(f, x1, y1, x2, y2)
-            # Draw the North and West maze border, which won't have been drawn
-            # by the procedure above.
-            print('<line x1="0" y1="0" x2="{}" y2="0"/>'.format(width), file=f)
-            print('<line x1="0" y1="0" x2="0" y2="{}"/>'.format(height), file=f)
-            print('</svg>', file=f)
-
 
 class Cell:
     def __init__(self, x, y):
