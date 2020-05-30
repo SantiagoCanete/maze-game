@@ -3,7 +3,7 @@ import math
 
 
 class CanvasBuilder:
-    def __init__(self, canvas_size=1000, line_width=2):
+    def __init__(self, canvas_size=800, line_width=2):
         self.canvas_size = canvas_size
         self.line_width = line_width
         self.canvas_width = self.canvas_size + self.line_width
@@ -29,16 +29,18 @@ class CanvasBuilder:
 
         # Draw horizontal lines
         if wall_down:
-            self.draw_line(location_x, location_y, location_x + cell_size, location_y)
+            self.draw_line(location_x - self.line_width / 2, location_y,
+                           location_x + cell_size + self.line_width / 2, location_y)
 
         if wall_up:
-            self.draw_line(location_x, location_y + cell_size, location_x + cell_size,
-                           location_y + cell_size)
+            self.draw_line(location_x - self.line_width / 2, location_y + cell_size,
+                           location_x + cell_size + self.line_width / 2, location_y + cell_size)
 
         # Draw vertical lines
         if wall_left:
-            self.draw_line(location_x, location_y, location_x, location_y + cell_size)
+            self.draw_line(location_x, location_y - self.line_width / 2, location_x,
+                           location_y + cell_size + self.line_width / 2)
 
         if wall_right:
-            self.draw_line(location_x + cell_size, location_y, location_x + cell_size,
-                           location_y + cell_size)
+            self.draw_line(location_x + cell_size, location_y - self.line_width / 2,
+                           location_x + cell_size, location_y + cell_size + self.line_width / 2)
