@@ -16,8 +16,8 @@ class MazeBuilder:
     """
 
     def __init__(self, num_rows, num_columns, init_row=0, init_column=0):
-        self.__num_rows = num_rows
-        self.__num_columns = num_columns
+        self.num_rows = num_rows
+        self.num_columns = num_columns
         self.__init_row = init_row
         self.__init_column = init_column
         self.grid = []
@@ -29,10 +29,10 @@ class MazeBuilder:
         """make_maze given a number of rows and columns and an initial location in the maze"""
 
         # Get total number of cells in maze
-        total_cells = self.__num_columns * self.__num_rows
+        total_cells = self.num_columns * self.num_rows
 
         # Initialize a grid where all cells have four walls and ar unvisited.
-        self.grid = [[Cell(cols, rows) for rows in range(self.__num_rows)] for cols in range(self.__num_columns)]
+        self.grid = [[Cell(cols, rows) for rows in range(self.num_rows)] for cols in range(self.num_columns)]
 
         # Define initial cell
         current_cell = [self.grid[self.__init_column][self.__init_row].x,
@@ -132,7 +132,7 @@ class MazeBuilder:
         """Check if a cell is inside the given grid"""
 
         is_in_maze = False
-        if 0 <= check_row <= (self.__num_rows - 1) and 0 <= check_col <= (self.__num_columns - 1):
+        if 0 <= check_row <= (self.num_rows - 1) and 0 <= check_col <= (self.num_columns - 1):
             is_in_maze = True
 
         return is_in_maze
