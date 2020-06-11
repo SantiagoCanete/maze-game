@@ -1,1 +1,1 @@
-# MazeGenerator
+# MakeAndSolveMaze

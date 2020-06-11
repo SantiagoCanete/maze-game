@@ -1,5 +1,4 @@
 import tkinter as tk
-import math
 
 
 class CanvasBuilder:
@@ -9,7 +8,6 @@ class CanvasBuilder:
         self._canvas_width = self._canvas_size + self._line_width
         self._canvas_height = self._canvas_size + self._line_width
         self._window = tk.Tk()
-        self._window.resizable(True, True)
         self._frame = tk.Frame(self._window, width=self._canvas_width, height=self._canvas_height)
         self._canvas = tk.Canvas(self._window, width=self._canvas_width, height=self._canvas_height, bg='white')
         self._avatar = 0

@@ -1,12 +1,10 @@
 import random
-import maze
 
 
 class MazeBuilder:
     """
     --------------------------------------------------------------------------------------------------------------------
     The MazeBuilder class generates a random maze using the Depth-First algorithm.
-    Reference: http://www.migapro.com/depth-first-search/
     --------------------------------------------------------------------------------------------------------------------
     List of methods in class:
         - Class constructor: __init__(num_rows, num_columns, init_row=0, init_column=0)
@@ -151,18 +149,19 @@ class Cell:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.walls = {'Up': 1, 'Down': 1, 'Right': 1, 'Left': 1}
+        self.walls = {'South': 1, 'North': 1, 'East': 1, 'West': 1}
         self.visited = 0
+        self.avatar_visited = 0
 
     def remove_wall(self, direction):
         if direction[0] == 1:
-            self.walls['Right'] = 0
+            self.walls['East'] = 0
         elif direction[0] == -1:
-            self.walls['Left'] = 0
+            self.walls['West'] = 0
         elif direction[1] == 1:
-            self.walls['Up'] = 0
+            self.walls['South'] = 0
         elif direction[1] == -1:
-            self.walls['Down'] = 0
+            self.walls['North'] = 0
 
     def mark_visited(self):
         self.visited = 1

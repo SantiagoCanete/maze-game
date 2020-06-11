@@ -7,13 +7,22 @@ class MazeSolver:
         self.avatar = avatar
 
     def my_solver(self):
-        # Write your maze solver here.
-        #
+        """
+        Write your maze solver here.
+        -----------------------------------------
+        Here is a list of what the avatar can do:
+            self.avatar.move()
+            self.avatar.turn_left()
+
+        -----------------------------------------
+        Sample code below:
+        """
         self.avatar.move()
-        self.avatar.pause(40.0 / 1000.0)
+        self.avatar.pause(0.25)
         self.avatar.move()
-        self.avatar.pause(40.0 / 1000.0)
+        self.avatar.pause(0.25)
         self.avatar.turn_left()
+        print([self.avatar.location_x, self.avatar.location_y])
 
 
 if __name__ == '__main__':
