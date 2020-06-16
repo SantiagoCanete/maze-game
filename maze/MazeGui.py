@@ -24,6 +24,8 @@ class MazeGui(maze.CanvasBuilder):
 
     def __form_gui_structure(self):
         self._window.title("Maze Creator")
+        photo = tk.PhotoImage(file="MazeBuilderLogo.png")
+        self._window.iconphoto(False, photo)
         tk.Label(self._window, text="Number of columns:", relief='sunken').grid(row=0, column=1, sticky=tk.W)
         tk.Label(self._window, text="Number of rows:", relief='sunken').grid(row=1, column=1, sticky=tk.W)
         tk.Label(self._window, text="Avatar X position:", relief='sunken').grid(row=3, column=1, sticky=tk.W)
