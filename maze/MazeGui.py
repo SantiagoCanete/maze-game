@@ -3,6 +3,10 @@ import tkinter as tk
 from tkinter import messagebox
 from time import sleep
 
+import sys
+sys.path.append("..")
+import solver
+
 
 class MazeGui(maze.CanvasBuilder):
     def __init__(self):
@@ -24,21 +28,25 @@ class MazeGui(maze.CanvasBuilder):
 
     def __form_gui_structure(self):
         self._window.title("Maze Creator")
-        photo = tk.PhotoImage(file="MazeBuilderLogo.png")
+        photo = tk.PhotoImage(file="maze/MazeBuilderLogo.png")
         self._window.iconphoto(False, photo)
-        tk.Label(self._window, text="Number of columns:", relief='sunken').grid(row=0, column=1, sticky=tk.W)
-        tk.Label(self._window, text="Number of rows:", relief='sunken').grid(row=1, column=1, sticky=tk.W)
-        tk.Label(self._window, text="Avatar X position:", relief='sunken').grid(row=3, column=1, sticky=tk.W)
-        tk.Label(self._window, text="Avatar Y position:", relief='sunken').grid(row=4, column=1, sticky=tk.W)
-        tk.Label(self._window, text="Avatar position: ", bg='white', relief='sunken') \
+        tk.Label(self._window, text="Number of columns:", relief='sunken', font=('Helvetica', 12))\
+            .grid(row=0, column=1, sticky=tk.W)
+        tk.Label(self._window, text="Number of rows:", relief='sunken', font=('Helvetica', 12))\
+            .grid(row=1, column=1, sticky=tk.W)
+        tk.Label(self._window, text="Avatar X position:", relief='sunken', font=('Helvetica', 12))\
+            .grid(row=3, column=1, sticky=tk.W)
+        tk.Label(self._window, text="Avatar Y position:", relief='sunken', font=('Helvetica', 12))\
+            .grid(row=4, column=1, sticky=tk.W)
+        tk.Label(self._window, text="Avatar position: ", bg='white', relief='sunken', font=('Helvetica', 12)) \
             .grid(row=8, column=0, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
         self.__position_dialog_label = tk.Label(self._window, text="", bg='white', relief='sunken')
         self.__position_dialog_label.grid(row=8, column=2, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
-        tk.Label(self._window, text="Avatar Orientation:", bg='white', relief='sunken') \
+        tk.Label(self._window, text="Avatar Orientation:", bg='white', relief='sunken', font=('Helvetica', 12)) \
             .grid(row=9, column=0, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
         self.__orientation_dialog_label = tk.Label(self._window, text="", bg='white', relief='sunken')
         self.__orientation_dialog_label.grid(row=9, column=2, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
-        tk.Label(self._window, text="Status", bg='white', relief='sunken') \
+        tk.Label(self._window, text="Ahead:", bg='white', relief='sunken', font=('Helvetica', 12)) \
             .grid(row=10, column=0, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
         self.__status_dialog_label = tk.Label(self._window, text="", bg='white', relief='sunken')
         self.__status_dialog_label.grid(row=10, column=2, columnspan=2, sticky=tk.W + tk.E + tk.N + tk.S)
@@ -61,25 +69,28 @@ class MazeGui(maze.CanvasBuilder):
 
         button_generate_maze = tk.Button(self._window, text="New Maze",
                                          command=lambda: self.__draw_maze(int(entry_row.get()),
-                                                                          int(entry_column.get())))
+                                                                          int(entry_column.get())),
+                                         font=('Helvetica', 14))
 
         button_generate_maze.grid(row=2, column=1, columnspan=2)
 
         self.__button_draw_avatar = tk.Button(self._window, text="Draw Avatar",
                                               command=lambda:
                                               self.__initialize_avatar(int(entry_avatar_position_x.get()),
-                                                                       int(entry_avatar_position_y.get())))
+                                                                       int(entry_avatar_position_y.get())),
+                                              font=('Helvetica', 14))
 
         self.__button_draw_avatar.grid(row=5, column=1, columnspan=2)
 
         self.__disable_button(self.__button_draw_avatar)
 
-        self.__button_run_solution = tk.Button(self._window, text="Run Solution", command=self.__initialize_maze_solver)
+        self.__button_run_solution = tk.Button(self._window, text="Run Solution", command=self.__initialize_maze_solver,
+                                               font=('Helvetica', 14))
         self.__button_run_solution.grid(row=6, column=1)
 
         self.__disable_button(self.__button_run_solution)
 
-        button_quit = tk.Button(self._window, text="Quit", command=self._window.quit)
+        button_quit = tk.Button(self._window, text="Quit", command=self._window.quit, font=('Helvetica', 14))
         button_quit.grid(row=6, column=2)
 
         self._canvas.grid(row=0, column=4, rowspan=20, columnspan=20)
@@ -127,7 +138,7 @@ class MazeGui(maze.CanvasBuilder):
             self.__enable_button(self.__button_run_solution)
 
     def __initialize_maze_solver(self):
-        self.__solver = maze.MazeSolver(self.__maze, self.__avatar)
+        self.__solver = solver.MazeSolver(self.__maze, self.__avatar)
         self.__solver.my_solver()
         self.__update_dialog_box()
 
@@ -153,17 +164,18 @@ class MazeGui(maze.CanvasBuilder):
     def __update_dialog_box(self):
         self.__position_dialog_label.config(text="[{location_x}, {location_y}]"
                                             .format(location_x=str(self.__avatar.location_x),
-                                                    location_y=str(self.__avatar.location_y)))
-        self.__orientation_dialog_label.config(text=self.__avatar.orientation)
+                                                    location_y=str(self.__avatar.location_y)),
+                                            font=('Helvetica', 16, 'bold'))
+        self.__orientation_dialog_label.config(text=self.__avatar.orientation, font=('Helvetica', 16, 'bold'))
 
         if self.__avatar.check_obstacle() and not self.__avatar.is_end:
-            self.__status_dialog_label.config(text="Wall")
+            self.__status_dialog_label.config(text="Wall", fg="red", font=('Helvetica', 16, 'bold'))
         elif self.__avatar.is_end:
-            self.__status_dialog_label.config(text="End")
+            self.__status_dialog_label.config(text="End", fg="blue", font=('Helvetica', 16, 'bold'))
         elif self.__avatar.check_visited():
-            self.__status_dialog_label.config(text="Visited")
+            self.__status_dialog_label.config(text="Visited", fg="yellow3", font=('Helvetica', 16, 'bold'))
         else:
-            self.__status_dialog_label.config(text="Clear")
+            self.__status_dialog_label.config(text="Clear", fg="green", font=('Helvetica', 16, 'bold'))
 
         self._canvas.update()
         sleep(self.__sleep_period)
